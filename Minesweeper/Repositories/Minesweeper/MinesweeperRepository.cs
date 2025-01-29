@@ -3,10 +3,11 @@ using Base.Models.Request;
 using Database;
 using Minesweeper.Minesweeper;
 using Microsoft.EntityFrameworkCore;
+using Minesweeper.Interfaces;
 
-namespace Minesweeper.Services.Minesweeper
+namespace Minesweeper.Repositories.Minesweeper
 {
-    public class MinesweeperService (MinesweeperContext context) : IMinesweeperService
+    public class MinesweeperRepository(MinesweeperContext context) : IMinesweeperRepository
     {
         readonly MinesweeperContext context = context;
         public async Task<GameInfoResponse> CreateNewGameAsync(NewGameRequest newGame, CancellationToken cancellationToken)
@@ -59,7 +60,7 @@ namespace Minesweeper.Services.Minesweeper
         {
             var gameInfo = await context.GameInfoResponses
                     .Where(x => x.GameId == gameTurnRequest.GameId)
-                    .FirstOrDefaultAsync(cancellationToken) 
+                    .FirstOrDefaultAsync(cancellationToken)
                 ?? throw new NullReferenceException("Игра не найдена");
 
             if (gameInfo.IsCompleted)
@@ -82,7 +83,7 @@ namespace Minesweeper.Services.Minesweeper
 
             var getter = new MinesweeperInfoGameGetter();
 
-            if (getPosition != null) 
+            if (getPosition != null)
             {
                 await getter.OpenPositionAsync(getPosition, gameInfo, positions, context, cancellationToken);
             }

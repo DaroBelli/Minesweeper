@@ -1,16 +1,20 @@
 using Database;
-using Minesweeper.Services.Minesweeper;
+using Microsoft.EntityFrameworkCore;
+using Minesweeper.Interfaces;
+using Minesweeper.Repositories.Minesweeper;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IMinesweeperService, MinesweeperService>();
-builder.Services.AddDbContext<MinesweeperContext>();
+
+builder.Services.AddScoped<IMinesweeperRepository, MinesweeperRepository>();
+
+builder.Services.AddDbContext<MinesweeperContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("postgres")));
 
 var app = builder.Build();
 

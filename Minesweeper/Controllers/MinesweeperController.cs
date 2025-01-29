@@ -1,23 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Base.Models.Request;
-using Minesweeper.Services.Minesweeper;
+using Minesweeper.Interfaces;
 
 namespace Minesweeper.Controllers
 {
     [ApiController]
-    public class MinesweeperController : ControllerBase
+    public class MinesweeperController(IMinesweeperRepository minesweeperRepository) : ControllerBase
     {
+        readonly CancellationTokenSource tokenSource = new();
+
         /// <summary>
         /// Запрос новый игры.
         /// </summary>
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> NewGameRequest([FromServices] IMinesweeperService svc, NewGameRequest request)
+        public async Task<IActionResult> NewGameRequest(NewGameRequest request)
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                var gameInfo = await svc.CreateNewGameAsync(request, tokenSource.Token);
+                var gameInfo = await minesweeperRepository.CreateNewGameAsync(request, tokenSource.Token);
 
                 return Ok(gameInfo);
             }
@@ -32,12 +33,11 @@ namespace Minesweeper.Controllers
         /// </summary>
         [Route("turn")]
         [HttpPost]
-        public async Task<IActionResult> GameTurnRequest([FromServices] IMinesweeperService svc, GameTurnRequest gameTurnRequest)
+        public async Task<IActionResult> GameTurnRequest(GameTurnRequest gameTurnRequest)
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                var gameInfo = await svc.GetInfoGameAsync(gameTurnRequest, tokenSource.Token);
+                var gameInfo = await minesweeperRepository.GetInfoGameAsync(gameTurnRequest, tokenSource.Token);
 
                 return Ok(gameInfo);
             }

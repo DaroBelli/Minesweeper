@@ -10,13 +10,9 @@ namespace Database
 
         public DbSet<Position> Positions { get; set; } = null!;
 
-        public MinesweeperContext()
+        public MinesweeperContext(DbContextOptions<MinesweeperContext> options) : base(options)
         {
             Database.EnsureCreated();
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=minesweeper;Username=postgres;Password=1234");
         }
     }
 }

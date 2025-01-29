@@ -110,7 +110,6 @@ namespace Minesweeper.Minesweeper
         /// <summary>
         /// Получить актуальный массив массивов всех позиций (Поле).
         /// </summary>
-        /// <param name="getPosition">Выбранная позиция.</param>
         /// <param name="gameInfo">Информация по игре.</param>
         /// <param name="context">Контекст БД.</param>
         /// <param name="cancellationToken">Токен.</param>

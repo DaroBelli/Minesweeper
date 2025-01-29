@@ -1,14 +1,14 @@
 ﻿using Base.Models.Response;
 using Base.Models.Request;
 
-namespace Minesweeper.Services.Minesweeper
+namespace Minesweeper.Interfaces
 {
-    public interface IMinesweeperService
+    public interface IMinesweeperRepository
     {
         /// <summary>
         /// Создать новую игру.
         /// </summary>
-        /// <param name="newGame">Данные по новой игре.</param>
+        /// <param name="request">Данные по новой игре.</param>
         /// <param name="cancellationToken">Токен.</param>
         /// <returns>Данные о созданной игре.</returns>
         Task<GameInfoResponse> CreateNewGameAsync(NewGameRequest request, CancellationToken cancellationToken);
